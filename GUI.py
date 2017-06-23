@@ -1,4 +1,5 @@
 from RM_scraper import get_data
+import Login_GUI
 import os
 import signal
 import gi
@@ -14,6 +15,7 @@ APPINDICATOR_ID = 'myappindicator'
 
 
 def main():
+
     indicator = appindicator.Indicator.new(APPINDICATOR_ID,
                                            os.path.abspath('/home/dushyant/Desktop/Github/DTU_Resume_Manager_Notifier/DTU,_Delhi_official_logo.png'),
                                            appindicator.IndicatorCategory.SYSTEM_SERVICES)
@@ -28,6 +30,9 @@ def rm_menu():
 
     x,y = get_data()
 
+    exit = gtk.MenuItem("Exit")
+    exit.connect('activate', stop)
+
     for i in range(0,len(x)):
         company_name = gtk.MenuItem(x[i])
         sep = gtk.SeparatorMenuItem()
@@ -40,9 +45,15 @@ def rm_menu():
         main_menu.append(company_name)
         main_menu.append(sep)
 
+    main_menu.append(exit)
+
     main_menu.show_all()
 
     return main_menu
+
+
+def stop(self):
+    gtk.main_quit()
 
 if __name__ == "__main__":
     main()

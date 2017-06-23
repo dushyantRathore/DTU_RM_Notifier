@@ -1,6 +1,8 @@
 from mechanize import Browser
 from bs4 import BeautifulSoup
-
+import pickle
+import sys
+import os
 
 def get_data():
 
@@ -10,8 +12,16 @@ def get_data():
 
     browser.select_form(nr=0)
 
-    browser['intern_student_username_rollnumber'] = "2K14/SE/029"
-    browser['intern_student_password'] = "iit2011130"
+    path = os.path.dirname(os.path.abspath(__file__))
+
+    fileobject1 =open(path + '/username.txt', 'r')
+    username = pickle.load(fileobject1)
+
+    fileobject2 = open(path + '/password.txt', 'r')
+    password = pickle.load(fileobject2)
+
+    browser['intern_student_username_rollnumber'] = username
+    browser['intern_student_password'] = password
 
     response = browser.submit()
 
