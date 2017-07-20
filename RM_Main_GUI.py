@@ -1,5 +1,5 @@
 from RM_scraper import get_data
-import Login_GUI
+import RM_Login_GUI
 import os
 import signal
 import gi

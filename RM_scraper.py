@@ -8,7 +8,7 @@ def get_data():
 
     browser = Browser()
     browser.set_handle_robots(False)
-    browser.open("http://tnp.dtu.ac.in/rm_2016-17/intern/intern_login")
+    browser.open("http://tnp.dtu.ac.in/rm_2016-17/")
 
     browser.select_form(nr=0)
 
@@ -20,8 +20,8 @@ def get_data():
     fileobject2 = open(path + '/password.txt', 'r')
     password = pickle.load(fileobject2)
 
-    browser['intern_student_username_rollnumber'] = username
-    browser['intern_student_password'] = password
+    browser['student_username_rollnumber'] = username
+    browser['student_password'] = password
 
     response = browser.submit()
 
