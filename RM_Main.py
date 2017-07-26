@@ -8,6 +8,7 @@ gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 import getpass
+import pickle
 
 APPINDICATOR_ID = 'myappindicator'
 
@@ -22,42 +23,48 @@ def get_data(username, password):
 
     browser.select_form(nr=0)
 
-    browser['student_username_rollnumber'] = username
-    browser['student_password'] = password
+    try:
 
-    response = browser.submit()
+        browser['student_username_rollnumber'] = username
+        browser['student_password'] = password
 
-    content = response.read()
-    soup = BeautifulSoup(content, "html.parser")
+        response = browser.submit()
 
-    li_index = []
-    li_heading = []
-    li_body= []
+        content = response.read()
+        soup = BeautifulSoup(content, "html.parser")
 
-    for ul in soup.find_all("ul", attrs={"class": "pagination pagination-sm pull-right"}):
-        for a in ul.find_all("a"):
-            x = a["href"].split("index/")
-            pu = str(x[0])
-            li_index.append(x[1])
+        li_index = []
+        li_heading = []
+        li_body= []
 
-    end = int(li_index[len(li_index) - 1])
+        for ul in soup.find_all("ul", attrs={"class": "pagination pagination-sm pull-right"}):
+            for a in ul.find_all("a"):
+                x = a["href"].split("index/")
+                pu = str(x[0])
+                li_index.append(x[1])
 
-    for i in range(0,end,2):
-        url = str(pu) + "index/" + str(i)
-        req = browser.open(url)
+        end = int(li_index[len(li_index) - 1])
 
-        c = req.read()
-        soup = BeautifulSoup(c, "html.parser")
+        for i in range(0,end,2):
+            url = str(pu) + "index/" + str(i)
+            req = browser.open(url)
 
-        for heading in soup.find_all("h4", attrs={"class":"timeline-header"}):
-            li_heading.append(heading.text)
+            c = req.read()
+            soup = BeautifulSoup(c, "html.parser")
 
-        for body in soup.find_all("div", attrs={"class":"timeline-body"}):
-            x = body.text
-            x = x.replace('.', '.\n')
-            li_body.append(x)
+            for heading in soup.find_all("h4", attrs={"class":"timeline-header"}):
+                li_heading.append(heading.text)
 
-    return li_heading,li_body
+            for body in soup.find_all("div", attrs={"class":"timeline-body"}):
+                x = body.text
+                x = x.replace('.', '.\n')
+                li_body.append(x)
+
+        return li_heading,li_body
+
+    except :
+
+        print "Invalid username/password combination"
 
 # Main function for the GUI
 
@@ -80,42 +87,51 @@ def main():
 
 def rm_menu():
 
-    # Get username
-    username = raw_input("Enter your username : ")
 
-    # Get password
-    password = str(getpass.getpass("Enter your password : "))
+    try:
 
-    main_menu = gtk.Menu()
+        pickle_u_read = open("username.pickle", "rb")
+        username = pickle.load(pickle_u_read)
 
-    try :
-
-        x,y = get_data(username, password)
-
-        exit = gtk.MenuItem("Exit")
-        exit.connect('activate', stop)
-
-        for i in range(0,len(x)):
-            company_name = gtk.MenuItem(x[i])
-            sep = gtk.SeparatorMenuItem()
-
-            company_body = gtk.Menu()
-            company_body.append(gtk.MenuItem(y[i]))
-
-            company_name.set_submenu(company_body)
-
-            main_menu.append(company_name)
-            main_menu.append(sep)
-
-        main_menu.append(exit)
-
-        main_menu.show_all()
-
-        return main_menu
+        pickle_p_read = open("password.pickle", "rb")
+        password = pickle.load(pickle_p_read)
 
     except:
 
-        print "Invalid username/password"
+        # Get username
+        username = raw_input("Enter your username : ")
+        pickle_u_write = open("username.pickle", "wb")
+        pickle.dump(username, pickle_u_write)
+
+        # Get password
+        password = getpass.getpass("Enter your password : ")
+        pickle_p_write = open("password.pickle", "wb")
+        pickle.dump(password, pickle_p_write)
+
+    main_menu = gtk.Menu()
+
+    x,y = get_data(username, password)
+
+    exit = gtk.MenuItem("Exit")
+    exit.connect('activate', stop)
+
+    for i in range(0,len(x)):
+        company_name = gtk.MenuItem(x[i])
+        sep = gtk.SeparatorMenuItem()
+
+        company_body = gtk.Menu()
+        company_body.append(gtk.MenuItem(y[i]))
+
+        company_name.set_submenu(company_body)
+
+        main_menu.append(company_name)
+        main_menu.append(sep)
+
+    main_menu.append(exit)
+
+    main_menu.show_all()
+
+    return main_menu
 
 
 def stop(self):
