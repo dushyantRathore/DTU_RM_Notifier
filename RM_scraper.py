@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pickle
 import sys
 import os
+import urllib2
 
 def get_data():
 
@@ -28,27 +29,35 @@ def get_data():
     content = response.read()
     soup = BeautifulSoup(content, "html.parser")
 
+    li_index = []
     li_heading = []
+    li_body= []
 
-    for heading in soup.find_all("h4", attrs={"class":"timeline-header"}):
-        li_heading.append(heading.text)
+    for ul in soup.find_all("ul", attrs= {"class" : "pagination pagination-sm pull-right"}):
+        for a in ul.find_all("a"):
+            x = a["href"].split("index/")
+            pu = str(x[0])
+            li_index.append(x[1])
 
-    li_body = []
+    end = int(li_index[len(li_index) - 1])
 
-    for body in soup.find_all("div", attrs={"class":"timeline-body"}):
-        x = body.text
-        x = x.replace('.', '.\n')
-        li_body.append(x)
+    print pu
 
-    # li_heading = map(lambda s:s.strip(), li_heading)
-    # li_body = map(lambda s: s.strip(), li_body)
+    for i in range(0,end,2):
+        url = str(pu) + "index/" + str(i)
+        req = browser.open(url)
 
-    # print len(li_heading)
-    # print len(li_body)
+        c = req.read()
+        soup = BeautifulSoup(c, "html.parser")
 
-    #print li_heading[0]
-    #print li_body[0]
+        for heading in soup.find_all("h4", attrs={"class": "timeline-header"}):
+            li_heading.append(heading.text)
 
-    # print li_body[0]
+        for body in soup.find_all("div", attrs={"class": "timeline-body"}):
+            x = body.text
+            x = x.replace('.', '.\n')
+            li_body.append(x)
 
-    return li_heading, li_body
+
+    return li_heading,li_body
+

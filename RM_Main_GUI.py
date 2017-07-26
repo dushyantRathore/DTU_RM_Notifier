@@ -16,8 +16,11 @@ APPINDICATOR_ID = 'myappindicator'
 
 def main():
 
+    path = os.path.dirname(os.path.abspath(__file__))
+    image_path = path + "/Logo.png"
+
     indicator = appindicator.Indicator.new(APPINDICATOR_ID,
-                                           os.path.abspath('/home/dushyant/Desktop/Github/DTU_RM_Results_Notifier/DTU,_Delhi_official_logo.png'),
+                                           os.path.abspath(image_path),
                                            appindicator.IndicatorCategory.SYSTEM_SERVICES)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     indicator.set_menu(rm_menu())
