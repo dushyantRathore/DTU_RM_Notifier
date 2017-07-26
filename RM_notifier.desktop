@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=RM_notifier
+Icon=/home/dushyant/Desktop/Github/DTU_RM_Notifier/Logo.png
+Type=Application
+Exec=python2 /home/dushyant/Desktop/Github/DTU_RM_Notifier/RM_Main.py
+Terminal=true
