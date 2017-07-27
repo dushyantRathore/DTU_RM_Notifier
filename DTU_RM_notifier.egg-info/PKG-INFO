@@ -1,0 +1,21 @@
+Metadata-Version: 1.1
+Name: DTU-RM-notifier
+Version: 1.0.1
+Summary: GUI for DTU's resume manager
+Home-page: https://github.com/dushyantRathore/DTU_RM_Notifier
+Author: Dushyant Rathore
+Author-email: dushyant.bgs@gmail.com
+License: MIT
+Description: This python package initiates a notification tool displaying the latest updates from DTU's resume manager
+Keywords: DTU resume manager notification tool
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Natural Language :: English
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7

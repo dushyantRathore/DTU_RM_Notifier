@@ -1,14 +1,15 @@
 import os
 import signal
 import gi
+import getpass
+import pickle
 from mechanize import Browser
 from bs4 import BeautifulSoup
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
-import getpass
-import pickle
+
 
 APPINDICATOR_ID = 'myappindicator'
 
@@ -112,6 +113,9 @@ def rm_menu():
 
     x,y = get_data(username, password)
 
+    desktop_entry = gtk.MenuItem("Create Desktop Entry")
+    desktop_entry.connect("activate", create_desktop_entry)
+
     exit = gtk.MenuItem("Exit")
     exit.connect('activate', stop)
 
@@ -127,6 +131,12 @@ def rm_menu():
         main_menu.append(company_name)
         main_menu.append(sep)
 
+
+    main_menu.append(desktop_entry)
+
+    sep = gtk.SeparatorMenuItem()
+    main_menu.append(sep)
+
     main_menu.append(exit)
 
     main_menu.show_all()
@@ -136,6 +146,35 @@ def rm_menu():
 
 def stop(self):
     gtk.main_quit()
+
+
+def create_desktop_entry(self):
+
+    # path of scr folder
+    src_path = os.path.dirname(os.path.realpath(__file__))
+
+    print src_path
+
+    entry = "[Desktop Entry]\n"
+    v = "Version=1.0\n"
+    tp = "Type=Application\n"
+    nm = "Name=DTU Resume Manager\n"
+    ic = "Icon=" + src_path + "/Logo.png\n"
+    ex = "Exec=python2 " + src_path + "/RM_Main.py\n"
+    cm = "Comment=GUI for DTU's Resume Manager\n"
+    tm = "Terminal=trues\n"
+
+    entry_path = os.getenv("HOME") + "/.local/share/applications/DTU Resume Manager.desktop"
+
+    with open(entry_path, 'w') as file:
+        file.write(entry)
+        file.write(v)
+        file.write(tp)
+        file.write(nm)
+        file.write(ic)
+        file.write(ex)
+        file.write(cm)
+        file.write(tm)
 
 if __name__ == "__main__":
     main()

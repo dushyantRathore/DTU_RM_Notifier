@@ -1,0 +1,8 @@
+DTU_RM_notifier.egg-info/PKG-INFO
+DTU_RM_notifier.egg-info/SOURCES.txt
+DTU_RM_notifier.egg-info/dependency_links.txt
+DTU_RM_notifier.egg-info/entry_points.txt
+DTU_RM_notifier.egg-info/requires.txt
+DTU_RM_notifier.egg-info/top_level.txt
+RMnotifier/RM_Main.py
+RMnotifier/__init__.py
