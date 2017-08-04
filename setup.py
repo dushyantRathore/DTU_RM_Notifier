@@ -32,7 +32,8 @@ setup(
     install_requires=[
         "mechanize",
         "requests<=2.11.1",
-        "beautifulsoup4"
+        "beautifulsoup4",
+        "gi"
     ],
     entry_points={
         'console_scripts':
