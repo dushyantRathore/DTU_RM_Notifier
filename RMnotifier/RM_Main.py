@@ -7,8 +7,8 @@ import getpass
 import pickle
 from mechanize import Browser
 from bs4 import BeautifulSoup
-from gi.repository import Gtk as gtk
-from gi.repository import AppIndicator3 as appindicator
+import gtk
+import appindicator
 
 
 APPINDICATOR_ID = 'myappindicator'
@@ -75,10 +75,9 @@ def main():
     path = os.path.dirname(os.path.abspath(__file__))
     image_path = path + "/Logo.png"
 
-    indicator = appindicator.Indicator.new(APPINDICATOR_ID,
-                                           os.path.abspath(image_path),
-                                           appindicator.IndicatorCategory.SYSTEM_SERVICES)
-    indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+    indicator = appindicator.Indicator(APPINDICATOR_ID,
+                                           os.path.abspath(image_path),appindicator.CATEGORY_COMMUNICATIONS)
+    indicator.set_status(appindicator.STATUS_ACTIVE)
     indicator.set_menu(rm_menu())
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     gtk.main()
