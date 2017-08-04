@@ -33,7 +33,8 @@ setup(
         "mechanize",
         "requests<=2.11.1",
         "beautifulsoup4",
-        "gi"
+        "gi",
+        "python-gi"
     ],
     entry_points={
         'console_scripts':
