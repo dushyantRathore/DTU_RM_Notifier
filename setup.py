@@ -34,7 +34,7 @@ setup(
         "requests<=2.11.1",
         "beautifulsoup4",
         "gi",
-        "python-gi"
+        "python-gobject"
     ],
     entry_points={
         'console_scripts':
