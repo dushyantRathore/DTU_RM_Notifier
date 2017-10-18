@@ -20,7 +20,7 @@ def get_data(username, password):
 
     browser = Browser()
     browser.set_handle_robots(False)
-    browser.open("http://tnp.dtu.ac.in/rm_2016-17/")
+    browser.open("http://tnp.dtu.ac.in/rm_2016-17/login")
 
     browser.select_form(nr=0)
 
@@ -34,6 +34,8 @@ def get_data(username, password):
         content = response.read()
         soup = BeautifulSoup(content, "html.parser")
 
+        # print soup
+
         li_index = []
         li_heading = []
         li_body= []
@@ -44,10 +46,22 @@ def get_data(username, password):
                 pu = str(x[0])
                 li_index.append(x[1])
 
+                # print x
+                # print pu
+
+
+        print pu
+        print li_index
+
         end = int(li_index[len(li_index) - 1])
 
-        for i in range(0,end,2):
-            url = str(pu) + "index/" + str(i)
+        print end
+
+        for i in range(0,end):
+            url = str(pu) + "index/" + str(li_index[i])
+
+            print url
+
             req = browser.open(url)
 
             c = req.read()
@@ -61,7 +75,11 @@ def get_data(username, password):
                 x = x.replace('.', '.\n')
                 li_body.append(x)
 
-        return li_heading,li_body
+        # print li_heading
+
+        # print li_body
+
+        return li_heading, li_body
 
     except :
 
@@ -118,7 +136,15 @@ def rm_menu():
     exit = gtk.MenuItem("Exit")
     exit.connect('activate', stop)
 
-    for i in range(0,len(x)):
+    heading_len = len(x)
+    body_len = len(y)
+
+    if heading_len < body_len:
+        data_length = heading_len
+    else :
+        data_length = body_len
+
+    for i in range(0,data_length):
         company_name = gtk.MenuItem(x[i])
         sep = gtk.SeparatorMenuItem()
 
